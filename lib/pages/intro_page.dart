@@ -6,64 +6,101 @@ class IntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.pink[50],
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
+      backgroundColor: const Color.fromARGB(255, 244, 235, 238),
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isWide = constraints.maxWidth > 600;
+
+            return Center(
+              child: SingleChildScrollView(
                 padding: const EdgeInsets.all(25),
-                child: Image.asset('lib/images/logo.png', height: 240),
-              ),
-              const SizedBox(height: 48),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 900),
+                  child: isWide
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Image.asset(
+                                'lib/images/logo.png',
+                                height: 220,
+                              ),
+                            ),
 
-              Text(
-                "Flower House",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                            const SizedBox(width: 40),
+
+                            Expanded(
+                              flex: 1,
+                              child: _buildTextContent(context),
+                            ),
+                          ],
+                        )
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(25),
+                              child: Image.asset(
+                                'lib/images/logo.png',
+                                height: 240,
+                              ),
+                            ),
+                            const SizedBox(height: 48),
+                            _buildTextContent(context),
+                          ],
+                        ),
                 ),
               ),
-
-              const SizedBox(height: 16),
-
-              Text(
-                "Fresh flowers for pickup or delivery every day",
-                style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-                textAlign: TextAlign.center,
-              ),
-
-              const SizedBox(height: 48),
-
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, '/home');
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.pink[900],
-                    borderRadius: BorderRadius.circular(12),
-                    
-                  ),
-                  padding: EdgeInsets.all(25),
-                  child: Center(
-                    child: Text(
-                      "Get started",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
+    );
+  }
+
+  Widget _buildTextContent(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Text(
+          "Flower House",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+
+        const SizedBox(height: 16),
+
+        Text(
+          "Fresh flowers for pickup or delivery every day",
+          style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+          textAlign: TextAlign.center,
+        ),
+
+        const SizedBox(height: 48),
+
+        GestureDetector(
+          onTap: () {
+            Navigator.pushReplacementNamed(context, '/home');
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 136, 14, 30),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Text(
+              "Get started",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
