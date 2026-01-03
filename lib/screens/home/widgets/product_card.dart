@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_flower_shop/models/product.dart';
-import 'package:flutter_flower_shop/widgets/circle_icon_button.dart';
+import 'package:flutter_flower_shop/core/theme/app_colors.dart';
+import 'package:flutter_flower_shop/data/models/product.dart';
+import 'package:flutter_flower_shop/shared/circle_icon_button.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -45,7 +46,7 @@ class ProductCard extends StatelessWidget {
                   CircleIconButton(
                     icon: Icons.add,
                     onPressed: () {},
-                    color: const Color.fromARGB(255, 136, 14, 30),
+                    color: AppColors.primary,
                     iconColor: Colors.white,
                   ),
                 ],
