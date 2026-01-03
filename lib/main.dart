@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flower_shop/screens/cart/cart_page.dart';
 import 'package:flutter_flower_shop/screens/checkout/checkout_page.dart';
 import 'package:flutter_flower_shop/screens/confirmation/confirmation_page.dart';
 import 'package:flutter_flower_shop/screens/home/home_page.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
           '/intro': (context) => const IntroPage(),
           '/home': (context) => const HomePage(),
           '/product': (context) => const ProductPage(),
+          '/cart': (context) => const CartPage(),
           '/checkout': (context) => const CheckoutPage(),
           '/confirmation': (context) => const ConfirmationPage(),
         },
