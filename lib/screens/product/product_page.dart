@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flower_shop/core/theme/app_colors.dart';
 import 'package:flutter_flower_shop/core/theme/app_text_styles.dart';
 import 'package:flutter_flower_shop/data/models/product.dart';
-import 'package:flutter_flower_shop/screens/product/widgets/add_to_cart_button.dart';
 import 'package:flutter_flower_shop/screens/product/widgets/quantity_selector.dart';
+import 'package:flutter_flower_shop/shared/action_button.dart';
 import 'widgets/product_image.dart';
 import 'widgets/product_details_row.dart';
 
@@ -150,7 +150,7 @@ class _ProductPageState extends State<ProductPage> {
             Expanded(
               child: SizedBox(
                 height: 56,
-                child: AddToCartButton(onPressed: () {}),
+                child: ActionButton(onPressed: () {}, label: "Add to cart"),
               ),
             ),
           ],
@@ -197,7 +197,7 @@ class _ProductPageState extends State<ProductPage> {
               flex: 6,
               child: SizedBox(
                 height: 56,
-                child: AddToCartButton(onPressed: () {}),
+                child: ActionButton(onPressed: () {}, label: "Add to cart"),
               ),
             ),
           ],
