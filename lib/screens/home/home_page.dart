@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flower_shop/core/theme/app_colors.dart';
 import 'package:flutter_flower_shop/data/models/product.dart';
 import 'package:flutter_flower_shop/data/services/database.dart';
+import 'package:flutter_flower_shop/providers/cart_provider.dart';
+import 'package:provider/provider.dart';
 import 'widgets/product_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,17 +17,41 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String _selectedCategoryId = 'all';
   String _selectedCategoryName = 'All';
-  String _selectedCategoryDescription = '';
+  String _selectedCategoryDescription = 'Browse all products';
   List<Product> _filteredProducts = [];
   List<Product> _allProducts = [];
   List<Map<String, dynamic>> _categories = [];
   bool _isLoading = true;
+  final _searchController = SearchController();
 
   @override
   void initState() {
     super.initState();
     _loadAllProducts();
     _loadCategories();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    final query = _searchController.value.text.toLowerCase();
+
+    if (query.isEmpty) {
+      setState(() {
+        _filteredProducts = _allProducts;
+      });
+    } else {
+      setState(() {
+        _filteredProducts = _allProducts
+            .where((p) => p.name.toLowerCase().contains(query))
+            .toList();
+      });
+    }
   }
 
   Future<void> _loadAllProducts() async {
@@ -41,6 +68,15 @@ class _HomePageState extends State<HomePage> {
       _filteredProducts = products;
       _isLoading = false;
     });
+
+    await Future.wait(
+      _allProducts
+          .where((p) => p.imageUrl.isNotEmpty)
+          .map(
+            (p) =>
+                precacheImage(CachedNetworkImageProvider(p.imageUrl), context),
+          ),
+    );
   }
 
   Future<void> _loadCategories() async {
@@ -59,6 +95,17 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _categories = categories;
     });
+
+    await Future.wait(
+      _categories
+          .where((c) => c['imageUrl'] != null && c['imageUrl'].isNotEmpty)
+          .map(
+            (c) => precacheImage(
+              CachedNetworkImageProvider(c['imageUrl']),
+              context,
+            ),
+          ),
+    );
   }
 
   Future<void> _filterProductsByCategory(
@@ -108,7 +155,7 @@ class _HomePageState extends State<HomePage> {
           : SingleChildScrollView(
               padding: EdgeInsets.symmetric(
                 horizontal: isWeb ? width * 0.1 : 16,
-                vertical: 32,
+                vertical: 48,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,7 +190,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                  const SizedBox(height: 16),
                   _buildProductGrid(isWeb, isLandscape),
                   const SizedBox(height: 32),
                 ],
@@ -153,6 +199,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildHeader(bool isWeb) {
+    final cart = context.watch<CartProvider>();
     return Row(
       mainAxisAlignment: isWeb
           ? MainAxisAlignment.end
@@ -164,36 +211,105 @@ class _HomePageState extends State<HomePage> {
             maxWidth: isWeb ? 500 : MediaQuery.of(context).size.width * 0.7,
           ),
           child: SearchAnchor(
+            searchController: _searchController,
             builder: (BuildContext context, SearchController controller) {
               return SearchBar(
                 controller: controller,
-                padding: const WidgetStatePropertyAll<EdgeInsets>(
-                  EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const WidgetStatePropertyAll(
+                  EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                 ),
                 onTap: () {
-                  controller.openView();
+                  setState(() {
+                    controller.openView();
+                  });
                 },
                 onChanged: (_) {
-                  controller.openView();
+                  setState(() {
+                    controller.openView();
+                  });
                 },
+                autoFocus: false,
+                elevation: WidgetStatePropertyAll(2),
                 leading: const Icon(Icons.search),
+                hintText: 'Search products',
               );
             },
             suggestionsBuilder:
                 (BuildContext context, SearchController controller) {
-                  return [];
+                  final query = controller.value.text.toLowerCase();
+                  final suggestions = _allProducts
+                      .where((p) => p.name.toLowerCase().contains(query))
+                      .toList();
+
+                  return suggestions.map((product) {
+                    return ListTile(
+                      leading: product.imageUrl.isNotEmpty
+                          ? Image.network(
+                              product.imageUrl,
+                              width: 40,
+                              height: 40,
+                              fit: BoxFit.cover,
+                            )
+                          : const Icon(Icons.local_florist),
+                      title: Text(product.name),
+                      subtitle: Text('€${product.price.toStringAsFixed(2)}'),
+                      onTap: () {
+                        setState(() {
+                          controller.closeView(product.name);
+                        });
+                        _searchController.clear();
+                        FocusScope.of(context).unfocus();
+                        Navigator.pushNamed(
+                          context,
+                          '/product',
+                          arguments: product,
+                        );
+                      },
+                    );
+                  }).toList();
                 },
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 16),
-          child: CircleAvatar(
-            backgroundColor: AppColors.primary,
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, '/cart');
-              },
-              child: Icon(Icons.shopping_bag_outlined, color: Colors.white),
+          child: InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, '/cart');
+            },
+            child: Stack(
+              alignment: Alignment.topRight,
+              children: [
+                CircleAvatar(
+                  backgroundColor: AppColors.primary,
+                  child: Icon(Icons.shopping_bag_outlined, color: Colors.white),
+                ),
+                if (cart.totalItems > 0)
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 20,
+                        minHeight: 20,
+                      ),
+                      child: Center(
+                        child: Text(
+                          cart.totalItems.toString(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
         ),
@@ -234,11 +350,11 @@ class _HomePageState extends State<HomePage> {
               children: [
                 CircleAvatar(
                   radius: 32,
-                  backgroundColor: AppColors.primary,
-                  backgroundImage: cat['imageUrl'].isEmpty
-                      ? null
-                      : AssetImage(cat['imageUrl']),
+                  backgroundImage: cat['imageUrl'].isNotEmpty
+                      ? CachedNetworkImageProvider(cat['imageUrl'])
+                      : null,
                 ),
+
                 const SizedBox(height: 8),
                 Text(
                   cat['name'],
