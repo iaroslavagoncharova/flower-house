@@ -13,7 +13,10 @@ class ProductDetailsRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(child: Text(product.name, style: AppTextStyles.title)),
-        Text('${product.price}€', style: AppTextStyles.price),
+        Text(
+          '€${product.price.toStringAsFixed(2)}',
+          style: AppTextStyles.price,
+        ),
       ],
     );
   }
