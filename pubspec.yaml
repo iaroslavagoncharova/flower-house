@@ -43,6 +43,11 @@ dependencies:
   flutter_slidable: ^4.0.3
   flutter_dotenv: ^6.0.0
   http: ^1.6.0
+  flutter_map: ^8.2.2
+  latlong2: ^0.9.1
+  geocoding: ^4.0.0
+  flutter_typeahead: ^5.2.0
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
@@ -104,8 +109,4 @@ flutter:
     - family: Nunito
       fonts:
         - asset: lib/assets/fonts/Nunito.ttf
-          style: normal
-    - family: Inter
-      fonts:
-        - asset: lib/assets/fonts/Inter.ttf
           style: normal
