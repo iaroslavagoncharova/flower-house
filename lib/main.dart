@@ -7,14 +7,19 @@ import 'package:flutter_flower_shop/screens/intro/intro_page.dart';
 import 'package:flutter_flower_shop/screens/product/product_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_flower_shop/data/services/database.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_flower_shop/core/theme/app_theme.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_flower_shop/providers/cart_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: "lib/assets/.env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  Stripe.publishableKey = dotenv.env['stripePublishableKey']!;
   runApp(const MyApp());
 }
 
@@ -23,9 +28,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<QuerySnapshot?>.value(
-      value: DatabaseService().getProductsStream(),
-      initialData: null,
+    return MultiProvider(
+      providers: [
+        StreamProvider<QuerySnapshot?>.value(
+          value: DatabaseService().getProductsStream(),
+          initialData: null,
+        ),
+
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: '/intro',
