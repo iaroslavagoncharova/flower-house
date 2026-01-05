@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_flower_shop/data/models/product.dart';
+import 'package:flutter_flower_shop/data/models/cart_item.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_flower_shop/screens/product/widgets/quantity_selector.dart';
 
 class CartItemTile extends StatelessWidget {
-  final Product product;
+  final CartItem item;
   final VoidCallback onRemove;
+  final VoidCallback onIncrement;
+  final VoidCallback onDecrement;
 
   const CartItemTile({
     super.key,
-    required this.product,
+    required this.item,
     required this.onRemove,
+    required this.onIncrement,
+    required this.onDecrement,
   });
 
-  void _openProductDetails(BuildContext context, Product product) {
-    Navigator.of(context).pushNamed('/product', arguments: product);
+  void _openProductDetails(BuildContext context) {
+    Navigator.of(context).pushNamed('/product', arguments: item.product);
   }
 
   @override
   Widget build(BuildContext context) {
+    final product = item.product;
+
     return GestureDetector(
-      onTap: () => _openProductDetails(context, product),
+      onTap: () => _openProductDetails(context),
       child: Slidable(
         key: ValueKey(product.id),
         endActionPane: ActionPane(
@@ -42,17 +48,13 @@ class CartItemTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: SizedBox(
                   width: 100,
                   height: 100,
-                  child: Image.asset(
-                    "lib/assets/images/best-mom.jpg",
-                    fit: BoxFit.cover,
-                  ),
+                  child: Image.network(product.imageUrl, fit: BoxFit.cover),
                 ),
               ),
 
@@ -69,28 +71,20 @@ class CartItemTile extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
+
                     const SizedBox(height: 6),
+
                     Text(
-                      '\$${product.price.toStringAsFixed(2)}',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    QuantitySelector(
-                      quantity: 1,
-                      onIncrement: () {},
-                      onDecrement: () {},
+                      '${product.price.toStringAsFixed(2)}€',
+                      style: const TextStyle(color: Colors.black54),
                     ),
 
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                        icon: const Icon(Icons.delete_outline),
-                        color: Colors.red,
-                        onPressed: onRemove,
-                      ),
+                    const SizedBox(height: 8),
+
+                    QuantitySelector(
+                      quantity: item.quantity,
+                      onIncrement: onIncrement,
+                      onDecrement: onDecrement,
                     ),
                   ],
                 ),

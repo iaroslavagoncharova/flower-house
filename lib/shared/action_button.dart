@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_flower_shop/core/theme/app_colors.dart';
 
 class ActionButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String label;
 
   const ActionButton({super.key, required this.onPressed, required this.label});
