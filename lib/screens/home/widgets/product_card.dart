@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flower_shop/core/theme/app_colors.dart';
 import 'package:flutter_flower_shop/data/models/product.dart';
+import 'package:flutter_flower_shop/providers/cart_provider.dart';
 import 'package:flutter_flower_shop/shared/circle_icon_button.dart';
+import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -27,7 +30,17 @@ class ProductCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Center(
-                  child: Image.network(product.imageUrl, fit: BoxFit.cover),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: CachedNetworkImage(
+                      imageUrl: product.imageUrl,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
@@ -40,12 +53,18 @@ class ProductCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${product.price}€',
+                    '€${product.price.toStringAsFixed(2)}',
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                   CircleIconButton(
+                    size: 45,
                     icon: Icons.add,
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<CartProvider>().add(product);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Added to cart')),
+                      );
+                    },
                     color: AppColors.primary,
                     iconColor: Colors.white,
                   ),
