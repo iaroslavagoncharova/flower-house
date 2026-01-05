@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flower_shop/data/models/product.dart';
 
@@ -23,15 +24,11 @@ class ProductImage extends StatelessWidget {
       borderRadius: BorderRadius.circular(borderRadius),
       child: AspectRatio(
         aspectRatio: aspectRatio,
-        child: Image.network(
-          product.imageUrl,
+        child: CachedNetworkImage(
+          imageUrl: product.imageUrl,
           fit: BoxFit.cover,
-          loadingBuilder: (context, child, progress) {
-            if (progress == null) return child;
-            return const Center(child: CircularProgressIndicator());
-          },
-          errorBuilder: (_, _, _) =>
-              const Center(child: Icon(Icons.broken_image)),
+          placeholder: (context, url) => const CircularProgressIndicator(),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
       ),
     );
