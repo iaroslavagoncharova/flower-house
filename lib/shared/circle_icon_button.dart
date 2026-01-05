@@ -5,6 +5,7 @@ class CircleIconButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Color? color;
   final Color? iconColor;
+  final double? size;
 
   const CircleIconButton({
     super.key,
@@ -12,6 +13,7 @@ class CircleIconButton extends StatelessWidget {
     required this.onPressed,
     this.color,
     this.iconColor,
+    this.size,
   });
 
   @override
@@ -20,8 +22,8 @@ class CircleIconButton extends StatelessWidget {
       onTap: onPressed,
       borderRadius: BorderRadius.circular(20),
       child: Container(
-        width: 36,
-        height: 36,
+        width: size ?? 36,
+        height: size ?? 36,
         decoration: BoxDecoration(
           color: color ?? Colors.white,
           shape: BoxShape.circle,

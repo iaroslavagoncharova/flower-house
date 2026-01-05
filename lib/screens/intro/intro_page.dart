@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flower_shop/core/theme/app_colors.dart';
+import 'package:flutter_flower_shop/screens/intro/pulsing_button.dart';
 
 class IntroPage extends StatelessWidget {
   const IntroPage({super.key});
@@ -66,7 +67,7 @@ class IntroPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Text(
-          "Flower House",
+          "Flower House Helsinki",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
 
@@ -78,27 +79,27 @@ class IntroPage extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
 
+        const SizedBox(height: 12),
+
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.location_on, color: AppColors.primary),
+            const SizedBox(width: 8),
+            Text(
+              "Kamppi, Helsinki",
+              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+            ),
+          ],
+        ),
+
         const SizedBox(height: 48),
 
-        GestureDetector(
+        PulsingButton(
+          text: "Get started",
           onTap: () {
             Navigator.pushReplacementNamed(context, '/home');
           },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
-            decoration: BoxDecoration(
-              color: AppColors.primary,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Text(
-              "Get started",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ),
         ),
       ],
     );
