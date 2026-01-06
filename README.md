@@ -19,11 +19,21 @@ Flower House is a modern, responsive online flower shop built using Flutter and 
 - **Confirmation emails with MailerSend:** After a successful payment, users receive a confirmation email to their email. It follows a custom template with Flower House's core design palette and important information about the order.
 - **Flutter animations:** The app features several animations, such as page transitions, pulsing buttons, and confetti after an order is confirmed.
 
+## Getting Started
+
 ## Demo
 A full walkthrough of the application is available here:
 
+https://github.com/user-attachments/assets/ff56fb93-a2a9-4bb9-bf28-b69e98003f9a
 
-A demo APK can be downloaded from the Releases section.
+A demo APK can be downloaded from the Releases section. The APK connects to a deployed demo backend and Firebase project and works out of the box without any local configuration.
+To test Stripe payments, you can use the test card number **4242 4242 4242 4242** with any expiration date and CVC. For more test cards and scenarios, see the [official Stripe Documentation](https://docs.stripe.com/testing).
+
+### Local Development
+This project relies on a pre-configured Firebase project and backend services (Stripe and MailerSend).
+Reproducing the full backend and Firebase setup locally would require extensive configuration (Firebase project setup, database structure, security rules, and third-party credentials) and is therefore not included.
+
+For this reason, local execution with independent credentials is not supported.
 
 ## Tech Stack
 - **Flutter**: A Google open-source framework for developing cross-platform applications.
@@ -37,19 +47,6 @@ A demo APK can be downloaded from the Releases section.
 - **Node.js**: JavaScript runtime environment for building servers and web applications.
   - `stripe` for Stripe server-side integration
   - `mailersend` for sending confirmation emails
- 
-## Getting Started
-
-### Demo
-The application can be previewed via the demo video or by installing the APK file available in the Releases section.
-The APK connects to a deployed demo backend and Firebase project and works out of the box without any local configuration.
-To test Stripe payments, you can use the test card number **4242 4242 4242 4242** with any expiration date and CVC. For more test cards and scenarios, see the [official Stripe Documentation](https://docs.stripe.com/testing).
-
-### Local Development
-This project relies on a pre-configured Firebase project and backend services (Stripe and MailerSend).
-Reproducing the full backend and Firebase setup locally would require extensive configuration (Firebase project setup, database structure, security rules, and third-party credentials) and is therefore not included.
-
-For this reason, local execution with independent credentials is not supported.
 
 ## Known Limitations
 - The application uses a pre-configured Firebase project and backend.
