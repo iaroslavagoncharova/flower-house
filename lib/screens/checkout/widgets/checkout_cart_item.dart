@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flower_shop/data/models/cart_item.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CheckoutCartItem extends StatelessWidget {
   final CartItem item;
@@ -24,7 +25,14 @@ class CheckoutCartItem extends StatelessWidget {
             child: SizedBox(
               width: 80,
               height: 80,
-              child: Image.network(item.product.imageUrl, fit: BoxFit.cover),
+              child: CachedNetworkImage(
+                imageUrl: item.product.imageUrl,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => const Center(
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
             ),
           ),
           const SizedBox(width: 16),
