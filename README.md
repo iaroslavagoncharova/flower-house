@@ -1,3 +1,8 @@
+![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black)
+![Stripe](https://img.shields.io/badge/Stripe-Test%20Mode-6772E5)
+![Platform](https://img.shields.io/badge/Platform-Android-green)
+![Status](https://img.shields.io/badge/Project-Demo-blue)
 ## 🌸 Flower House
 
 ## Overview
@@ -38,6 +43,7 @@ A demo APK can be downloaded from the Releases section.
 ### Demo
 The application can be previewed via the demo video or by installing the APK file available in the Releases section.
 The APK connects to a deployed demo backend and Firebase project and works out of the box without any local configuration.
+To test Stripe payments, you can use the test card number **4242 4242 4242 4242** with any expiration date and CVC. For more test cards and scenarios, see the [official Stripe Documentation](https://docs.stripe.com/testing).
 
 ### Local Development
 This project relies on a pre-configured Firebase project and backend services (Stripe and MailerSend).
