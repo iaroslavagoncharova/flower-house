@@ -128,10 +128,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
       await OrderService.createOrder(order);
 
-      cart.clear();
-
       if (!mounted) return;
       await sendOrderConfirmationEmail(order);
+      cart.clear();
       Navigator.pushNamedAndRemoveUntil(
         context,
         '/confirmation',
