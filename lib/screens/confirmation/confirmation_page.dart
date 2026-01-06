@@ -20,6 +20,10 @@ class _ConfirmationPageState extends State<ConfirmationPage>
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 20),
+    )..repeat();
     _petals = List.generate(_numPetals, (_) => _createPetal());
   }
 
