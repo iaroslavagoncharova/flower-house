@@ -48,6 +48,7 @@ dependencies:
   geocoding: ^4.0.0
   flutter_typeahead: ^5.2.0
   cached_network_image: ^3.4.1
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -110,3 +111,7 @@ flutter:
       fonts:
         - asset: lib/assets/fonts/Nunito.ttf
           style: normal
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "lib/assets/icons/icon.png"

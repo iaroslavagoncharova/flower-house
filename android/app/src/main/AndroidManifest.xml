@@ -3,7 +3,7 @@
     <application
         android:label="flutter_flower_shop"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
          android:theme="@style/NormalTheme">
         <activity
             android:name=".MainActivity"
