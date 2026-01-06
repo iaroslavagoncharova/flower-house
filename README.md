@@ -1,3 +1,8 @@
+![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black)
+![Stripe](https://img.shields.io/badge/Stripe-Test%20Mode-6772E5)
+![Platform](https://img.shields.io/badge/Platform-Android-green)
+![Status](https://img.shields.io/badge/Project-Demo-blue)
 ## 🌸 Flower House
 
 ## Overview
