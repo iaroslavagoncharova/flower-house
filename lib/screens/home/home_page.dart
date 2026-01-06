@@ -244,11 +244,18 @@ class _HomePageState extends State<HomePage> {
                   return suggestions.map((product) {
                     return ListTile(
                       leading: product.imageUrl.isNotEmpty
-                          ? Image.network(
-                              product.imageUrl,
+                          ? CachedNetworkImage(
+                              imageUrl: product.imageUrl,
                               width: 40,
                               height: 40,
                               fit: BoxFit.cover,
+                              placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
                             )
                           : const Icon(Icons.local_florist),
                       title: Text(product.name),
